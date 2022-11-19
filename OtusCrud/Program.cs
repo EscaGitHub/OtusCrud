@@ -1,4 +1,7 @@
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+using OtusCrud.Data;
+using OtusCrud.Repositories;
 using OtusCrud.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,8 +17,12 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
+builder.Services.AddDbContext<UserDataContext>(option =>
+    option.UseNpgsql(builder.Configuration.GetConnectionString("OtusUsers")));
+
 // DI:
-builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 

@@ -47,9 +47,11 @@ public class UserController : ControllerBase
     /// Create user
     /// </summary>
     [HttpPost]
-    public async Task<IActionResult> Get(User user)
+    public async Task<IActionResult> Create(User user, CancellationToken cancellationToken)
     {
-        return await Task.FromResult(Ok(user));
+        var addedUser = await _userService.CreateUserAsync(user, cancellationToken);
+
+        return Ok(addedUser);
     }
 
     /// <summary>
@@ -64,8 +66,8 @@ public class UserController : ControllerBase
     /// <summary>
     /// Update user
     /// </summary>
-    [HttpPut("{userId}")]
-    public async Task<IActionResult> Update(long userId)
+    [HttpPut]
+    public async Task<IActionResult> Update(User user)
     {
         return await Task.FromResult(Ok(new User()));
     }

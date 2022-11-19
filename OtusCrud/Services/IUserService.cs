@@ -25,9 +25,8 @@ public interface IUserService
     /// <summary>
     /// Создать пользователя.
     /// </summary>
-    /// <param name="user"></param>
     /// <returns></returns>
-    Task<User> CreateUserAsync(User user);
+    Task<User> CreateUserAsync(User user, CancellationToken cancellationToken);
     
     /// <summary>
     /// Удалить пользователя.

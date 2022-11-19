@@ -1,5 +1,9 @@
 using System.Collections.Concurrent;
+using System.Reflection.Metadata.Ecma335;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using OtusCrud.Data.DataModels;
 using OtusCrud.Models;
+using OtusCrud.Repositories;
 
 namespace OtusCrud.Services;
 
@@ -8,6 +12,13 @@ namespace OtusCrud.Services;
 /// </summary>
 public class UserService : IUserService
 {
+    private readonly IUserRepository _userRepository;
+
+    public UserService(IUserRepository userRepository)
+    {
+        _userRepository = userRepository;
+    }
+    
     #region Initialize users
     private readonly Dictionary<long, User> _usersCollection = new()
     {
@@ -52,17 +63,19 @@ public class UserService : IUserService
     /// </summary>
     public async Task<User?> GetUserAsync(long userId, CancellationToken cancellationToken)
     {
-        _usersCollection.TryGetValue(userId, out var user);
+        var userDto = await _userRepository.GetAsync(userId, cancellationToken);
 
-        return await Task.FromResult(user);
+        return userDto is null ? null : Convert(userDto);
     }
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public async Task<User> CreateUserAsync(User user)
+    public async Task<User> CreateUserAsync(User user, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var userDto = await _userRepository.AddAsync(Convert(user), cancellationToken);
+
+        return Convert(userDto);
     }
 
     /// <summary>
@@ -79,5 +92,30 @@ public class UserService : IUserService
     public Task<User> UpdateUserAsync(long userId)
     {
         throw new NotImplementedException();
+    }
+
+    private User Convert(UserEntity userDto)
+    {
+        return new User
+        {
+            Id = userDto.Id,
+            UserName = userDto.UserName,
+            FirstName = userDto.FirstName,
+            LastName = userDto.LastName,
+            Phone = userDto.Phone,
+            Email = userDto.Email
+        };
+    }
+
+    private UserEntity Convert(User user)
+    {
+        return new UserEntity
+        {
+            UserName = user.UserName,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Phone = user.Phone,
+            Email = user.Email
+        };
     }
 }
