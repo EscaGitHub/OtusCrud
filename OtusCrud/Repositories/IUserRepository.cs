@@ -11,7 +11,7 @@ public interface IUserRepository
     /// <summary>
     /// Полчение пользователей.
     /// </summary>
-    Task<List<UserEntity>> GetAllAsync();
+    Task<List<UserEntity>> GetAllAsync(CancellationToken cancellationToken);
 
     /// <summary>
     /// Получение пользователя.
@@ -28,10 +28,10 @@ public interface IUserRepository
     /// Удаление пользователя.
     /// </summary>
     /// <returns></returns>
-    Task DeleteAsync(long id);
+    Task DeleteAsync(long id, CancellationToken cancellationToken);
 
     /// <summary>
     /// Обновление пользователя.
     /// </summary>
-    Task<UserEntity?> Update(UserEntity entity);
+    Task<UserEntity?> Update(UserEntity entity, CancellationToken cancellationToken);
 }

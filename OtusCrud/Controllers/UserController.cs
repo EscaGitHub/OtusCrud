@@ -47,7 +47,7 @@ public class UserController : ControllerBase
     /// Create user
     /// </summary>
     [HttpPost]
-    public async Task<IActionResult> Create(User user, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create(UserModel user, CancellationToken cancellationToken)
     {
         var addedUser = await _userService.CreateUserAsync(user, cancellationToken);
 
@@ -60,15 +60,19 @@ public class UserController : ControllerBase
     [HttpDelete("{userId}")]
     public async Task<IActionResult> Delete(long userId, CancellationToken cancellationToken)
     {
-        return await Task.FromResult(Ok());
+        await _userService.DeleteUserAsync(userId, cancellationToken);
+
+        return Ok();
     }
     
     /// <summary>
     /// Update user
     /// </summary>
-    [HttpPut]
-    public async Task<IActionResult> Update(User user)
+    [HttpPut("{userId}")]
+    public async Task<IActionResult> Update(long userId, UserModel user, CancellationToken cancellationToken)
     {
-        return await Task.FromResult(Ok(new User()));
+        var updatedUser = await _userService.UpdateUserAsync(userId, user, cancellationToken);
+
+        return Ok(updatedUser);
     }
 }

@@ -10,34 +10,27 @@ public interface IUserService
     /// <summary>
     /// Получить всех пользователей. 
     /// </summary>
-    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<ICollection<User>> GetAllAsync(CancellationToken cancellationToken);
 
     /// <summary>
     /// Получить пользователя.
     /// </summary>
-    /// <param name="userId"></param>
-    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<User?> GetUserAsync(long userId, CancellationToken cancellationToken);
 
     /// <summary>
     /// Создать пользователя.
     /// </summary>
-    /// <returns></returns>
-    Task<User> CreateUserAsync(User user, CancellationToken cancellationToken);
+    Task<User> CreateUserAsync(UserModel user, CancellationToken cancellationToken);
     
     /// <summary>
     /// Удалить пользователя.
     /// </summary>
-    /// <param name="userId"></param>
-    Task DeleteUserAsync(long userId);
+    Task DeleteUserAsync(long userId, CancellationToken cancellationToken);
 
     /// <summary>
-    /// Обновление пользователя.
+    /// Обновить пользователя.
     /// </summary>
-    /// <param name="userId"></param>
-    /// <returns></returns>
-    Task<User> UpdateUserAsync(long userId);
+    Task<User?> UpdateUserAsync(long userId, UserModel user, CancellationToken cancellationToken);
 }

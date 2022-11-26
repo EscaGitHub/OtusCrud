@@ -24,9 +24,9 @@ public class UserRepository : IUserRepository
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public Task<List<UserEntity>> GetAllAsync()
+    public Task<List<UserEntity>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return _context.User.ToListAsync();
+        return _context.User.ToListAsync(cancellationToken);
     }
 
     /// <summary>
@@ -55,23 +55,23 @@ public class UserRepository : IUserRepository
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public async Task DeleteAsync(long id)
+    public async Task DeleteAsync(long id, CancellationToken cancellationToken)
     {
-        var user = await _context.User.FindAsync(id);
+        var user = await _context.User.FindAsync(new object?[] { id }, cancellationToken: cancellationToken);
 
         if (user is not null)
         {
             _context.Remove(user);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public async Task<UserEntity?> Update(UserEntity entity)
+    public async Task<UserEntity?> Update(UserEntity entity, CancellationToken cancellationToken)
     {
-        var user = await _context.User.FindAsync(entity.Id);
+        var user = await _context.User.FindAsync(new object?[] { entity.Id }, cancellationToken: cancellationToken);
 
         if (user != null)
         {
@@ -80,7 +80,7 @@ public class UserRepository : IUserRepository
             user.Phone = entity.Phone;
             user.Email = entity.Email;
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return user;
         }

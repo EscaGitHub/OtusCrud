@@ -1,6 +1,3 @@
-using System.Collections.Concurrent;
-using System.Reflection.Metadata.Ecma335;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OtusCrud.Data.DataModels;
 using OtusCrud.Models;
 using OtusCrud.Repositories;
@@ -14,48 +11,25 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
 
+    /// <summary>
+    /// Конструктор <see cref="UserService"/>
+    /// </summary>
     public UserService(IUserRepository userRepository)
     {
         _userRepository = userRepository;
     }
     
-    #region Initialize users
-    private readonly Dictionary<long, User> _usersCollection = new()
-    {
-        {
-            0,
-            new User
-            {
-                Id = 0,
-                UserName = "Iv",
-                FirstName = "Ivan",
-                LastName = "Ivanov",
-                Email = "ivan@ivanov.ru",
-                Phone = "79109009090"
-            }
-        },
-        {
-            1,
-            new User
-            {
-                Id = 1,
-                UserName = "Si",
-                FirstName = "Petr",
-                LastName = "Sidorov",
-                Email = "petr@sidorov.ru",
-                Phone = "79119009090"
-            }
-        }
-    };
-    #endregion
-
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
     /// <param name="cancellationToken"></param>
     public async Task<ICollection<User>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await Task.FromResult(_usersCollection.Values);
+        var usersDto =  await _userRepository.GetAllAsync(cancellationToken);
+
+        var users = usersDto.Select(Convert).ToArray();
+
+        return users;
     }
 
     /// <summary>
@@ -71,7 +45,7 @@ public class UserService : IUserService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public async Task<User> CreateUserAsync(User user, CancellationToken cancellationToken)
+    public async Task<User> CreateUserAsync(UserModel user, CancellationToken cancellationToken)
     {
         var userDto = await _userRepository.AddAsync(Convert(user), cancellationToken);
 
@@ -81,20 +55,27 @@ public class UserService : IUserService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public Task DeleteUserAsync(long userId)
+    public Task DeleteUserAsync(long userId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return _userRepository.DeleteAsync(userId, cancellationToken);
     }
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public Task<User> UpdateUserAsync(long userId)
+    public async Task<User?> UpdateUserAsync(long userId, UserModel user, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var userEntity = Convert(user);
+        userEntity.Id = userId;
+        
+        var userDto = await _userRepository.Update(userEntity, cancellationToken);
+        
+        return userDto is null ? null : Convert(userDto);
     }
 
-    private User Convert(UserEntity userDto)
+    #region Private methods
+    
+    private static User Convert(UserEntity userDto)
     {
         return new User
         {
@@ -107,7 +88,7 @@ public class UserService : IUserService
         };
     }
 
-    private UserEntity Convert(User user)
+    private static UserEntity Convert(UserModel user)
     {
         return new UserEntity
         {
@@ -118,4 +99,7 @@ public class UserService : IUserService
             Email = user.Email
         };
     }
+    
+    #endregion
+    
 }
