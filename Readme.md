@@ -72,6 +72,10 @@ To connect to your database from outside the cluster execute the following comma
     
     kubectl port-forward --namespace default svc/my-release-postgresql 5432:5432
 
+Для доступа из контейнера необходимо в коннект к БД прописать:
+
+    Server=host.docker.internal
+
 ## Добавление конфигураций
     kubectl apply -f .\otus-docker-deployment.yaml --namespace=testing
     kubectl apply -f .\otus-docker-service.yaml --namespace=testing
