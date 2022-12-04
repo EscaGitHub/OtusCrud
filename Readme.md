@@ -72,7 +72,7 @@ To connect to your database from outside the cluster execute the following comma
     
     kubectl port-forward --namespace default svc/my-release-postgresql 5432:5432
 
-Для доступа из контейнера необходимо в коннект к БД прописать:
+Для доступа из контейнера необходимо в коннект к БД прописать вместо localhost:
 
     Server=host.docker.internal
 

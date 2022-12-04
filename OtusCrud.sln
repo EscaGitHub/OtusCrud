@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtusCrud", "OtusCrud\OtusCr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtusCrud.Data", "OtusCrud.Data\OtusCrud.Data.csproj", "{06EE7778-EAEC-486B-9D00-1A65C113DF96}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtusCrud.Migrations", "OtusCrud.Migrations\OtusCrud.Migrations.csproj", "{BE618811-5EFD-4EA6-A1D6-F85964E5E730}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{06EE7778-EAEC-486B-9D00-1A65C113DF96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06EE7778-EAEC-486B-9D00-1A65C113DF96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06EE7778-EAEC-486B-9D00-1A65C113DF96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE618811-5EFD-4EA6-A1D6-F85964E5E730}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE618811-5EFD-4EA6-A1D6-F85964E5E730}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE618811-5EFD-4EA6-A1D6-F85964E5E730}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE618811-5EFD-4EA6-A1D6-F85964E5E730}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
