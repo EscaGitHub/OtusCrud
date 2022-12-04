@@ -6,11 +6,14 @@ using OtusCrud.Data.DataModels;
 var config = new ConfigurationBuilder()
     .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
     .AddJsonFile("appsettings.json")
+    .AddEnvironmentVariables()
     .Build();
 
 var optionsBuilder = new DbContextOptionsBuilder<UserDataContext>();
 
 var connectionString = config.GetConnectionString("OtusUsers");
+
+Console.WriteLine($"Connection string: {connectionString}");
 
 optionsBuilder.UseNpgsql(connectionString);
 

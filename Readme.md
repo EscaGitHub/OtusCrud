@@ -7,6 +7,15 @@
 
     helm install my-release --set auth.postgresPassword=Test123 --set auth.database=otususers bitnami/postgresql
 
+Подключение к БД прописывается в Secrets k8s:
+
+    kubectl apply -f .\otus-crud-secrets.yaml
+
+Первоначальные миграции БД запускаются с помощью Job k8s:
+
+    kubectl apply -f .\otus-crud-migrations-job.yaml
+
+!!! Описать манифесты для сервиса
 
 ## Подготовка
 Предварительно установлен minikube:

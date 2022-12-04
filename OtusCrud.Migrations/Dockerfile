@@ -4,6 +4,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["OtusCrud.Migrations/OtusCrud.Migrations.csproj", "OtusCrud.Migrations/"]
+COPY ["OtusCrud.Data/OtusCrud.Data.csproj", "OtusCrud.Data/"]
 RUN dotnet restore "OtusCrud.Migrations/OtusCrud.Migrations.csproj"
 COPY . .
 WORKDIR "/src/OtusCrud.Migrations"
