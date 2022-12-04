@@ -2,17 +2,11 @@
 
 ## ДЗ
 
-Манифесты: 
+### Установка Postgresql в k8s
+    helm repo add bitnami https://charts.bitnami.com/bitnami
 
-    kubectl apply -f .\kubernetes\manifests\
+    helm install my-release --set auth.postgresPassword=Test123 --set auth.database=otususers bitnami/postgresql
 
-Вызов сервиса: 
-    
-    curl http://arch.homework/health
-
-Rewrite:
-    
-    curl http://arch.homework/otusapp/ilya/health
 
 ## Подготовка
 Предварительно установлен minikube:
@@ -42,6 +36,7 @@ IP адрес выхода minikube:
     helm install nginx ingress-nginx/ingress-nginx --namespace testing -f nginx-ingress.yaml
 
 ## Установка Postgresql в k8s
+
     helm repo add bitnami https://charts.bitnami.com/bitnami
 
     helm install my-release --set auth.postgresPassword=Test123 --set auth.database=otususers bitnami/postgresql
