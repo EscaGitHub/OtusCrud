@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otus-crud-webapi-deployment
+  labels:
+    app: otus-crud-webapi
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: otus-crud-webapi
+  template:
+    metadata:
+      labels:
+        app: otus-crud-webapi
+    spec:
+      containers:
+        - name: otus-crud-webapi
+          image: escadockerhub/otus.crud:1.0
+          env:
+            - name: ConnectionStrings__OtusUsers
+              valueFrom:
+                secretKeyRef:
+                  name: otus-crud-secrets
+                  key: DbConnectionString
+          ports:
+            - containerPort: 8000
+              name: web
+          livenessProbe:
+            httpGet:
+              port: 8000
+              path: /health
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              port: 8000
+              path: /health
+            initialDelaySeconds: 5
+            periodSeconds: 10

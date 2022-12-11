@@ -1,6 +1,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using OtusCrud.Data;
+using OtusCrud.Models;
 using OtusCrud.Repositories;
 using OtusCrud.Services;
 
@@ -26,15 +27,13 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapGet("/health", () => new HealthResponse { Status = "OK" });
 
 app.Run();
