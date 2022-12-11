@@ -15,7 +15,13 @@
 
     kubectl apply -f .\otus-crud-migrations-job.yaml
 
-!!! Описать манифесты для сервиса
+Проверка работы:
+
+    http://arch.homework/health
+
+Swagger:
+
+    http://arch.homework/swagger/index.html
 
 ## Подготовка
 Предварительно установлен minikube:
@@ -81,7 +87,6 @@ To connect to your database from outside the cluster execute the following comma
     Server=host.docker.internal
 
 ## Добавление конфигураций
-    kubectl apply -f .\otus-docker-deployment.yaml --namespace=testing
-    kubectl apply -f .\otus-docker-service.yaml --namespace=testing
-    kubectl apply -f .\otus-docker-ingress.yaml --namespace=testing
+    
+    kubectl apply -f .\kubernetes\
 

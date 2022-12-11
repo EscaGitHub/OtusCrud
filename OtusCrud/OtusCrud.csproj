@@ -12,7 +12,7 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <DocumentationFile></DocumentationFile>
+      <DocumentationFile>bin\Release\OtusCrud.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
