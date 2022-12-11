@@ -1,4 +1,4 @@
-# Базовые сущности Kubernetes
+# Базовые сущности Кubernetes: Service, Ingress
 
 ## ДЗ
 
