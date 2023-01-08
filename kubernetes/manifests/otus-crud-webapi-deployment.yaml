@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: otus-crud-webapi
-          image: escadockerhub/otus.crud:1.1
+          image: escadockerhub/otus.crud:2.0
           env:
             - name: ConnectionStrings__OtusUsers
               valueFrom:

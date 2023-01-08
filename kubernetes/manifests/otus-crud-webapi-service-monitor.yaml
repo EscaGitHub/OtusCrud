@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: otus-crud-monitor
+  labels:
+    app: otus-crud-webapi
+spec:
+  endpoints:
+    - port: metric
+      scheme: http
+      path: /metrics
+      interval: 15s
+  selector:
+    matchLabels:
+      app: otus-crud-webapi
+  namespaceSelector:
+    matchNames:
+      - default

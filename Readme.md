@@ -60,7 +60,7 @@ IP адрес выхода minikube:
 
     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx/
     helm repo update
-    helm install nginx ingress-nginx/ingress-nginx --namespace testing -f nginx-ingress.yaml
+    helm install nginx ingress-nginx/ingress-nginx -f nginx-ingress.yaml
 
 ## Установка Postgresql в k8s
 
@@ -101,4 +101,15 @@ To connect to your database from outside the cluster execute the following comma
 ## Добавление конфигураций
     
     kubectl apply -f .\kubernetes\
+
+## Добавление prometheus
+
+    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+    helm repo update
+    helm install stack prometheus-community/kube-prometheus-stack -f prometheus.yaml
+
+Пробросить порт для доступа с рабочей машины в prometheus:
+
+    kubectl port-forward --namespace default svc/prometheus-operated 9090:9090
+
 

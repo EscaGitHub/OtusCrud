@@ -8,7 +8,7 @@ spec:
   selector:
     app: otus-crud-webapi
   ports:
-    - name: http
+    - name: metric
       protocol: TCP
       port: 80
       targetPort: web
