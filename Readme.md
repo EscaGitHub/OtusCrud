@@ -56,11 +56,15 @@ IP адрес выхода minikube:
 
     kubectl create namespace testing
 
-Установка через helm nginx-ingress daemon:
+### Установка через helm nginx-ingress daemon:
 
     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx/
     helm repo update
     helm install nginx ingress-nginx/ingress-nginx -f nginx-ingress.yaml
+
+Обновление конфигурации:
+
+    helm upgrade nginx ingress-nginx/ingress-nginx -f .\nginx-ingress.yaml
 
 ## Установка Postgresql в k8s
 
