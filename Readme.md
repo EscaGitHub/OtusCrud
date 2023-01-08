@@ -108,8 +108,11 @@ To connect to your database from outside the cluster execute the following comma
     helm repo update
     helm install stack prometheus-community/kube-prometheus-stack -f prometheus.yaml
 
-Пробросить порт для доступа с рабочей машины в prometheus:
+Пробросить порт для доступа с рабочей машины в prometheus и grafana:
 
     kubectl port-forward --namespace default svc/prometheus-operated 9090:9090
+    kubectl port-forward --namespace default svc/stack-grafana 9000:80
+
+Логин/пароль grafana: admin/prom-operator
 
 
