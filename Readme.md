@@ -2,6 +2,25 @@
 
 ## ДЗ
 
+### Тестирование нагрузки
+
+    .\ab.exe -n 100000 -c 2 http://arch.homework/api/v1/user
+    .\ab.exe -n 100000 -c 2 http://arch.homework/api/v1/user/3
+
+### Экспортированный dashboard Grafana c панелями nginx и сервиса
+
+    .\kubernetes\grafana-dashboard.json
+
+### Изменен конфигурационный файл для nginx-ingress.yaml
+
+Включены метрики nginx:
+```  
+metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+```
+
 ### Установка Postgresql в k8s
     helm repo add bitnami https://charts.bitnami.com/bitnami
 
@@ -119,4 +138,11 @@ To connect to your database from outside the cluster execute the following comma
 
 Логин/пароль grafana: admin/prom-operator
 
+## Описание Apache Benchmark для тестирования
+https://httpd.apache.org/docs/2.4/programs/ab.html
 
+    .\ab.exe -n 10000 -c 10 http://arch.homework/api/v1/user
+
+Пример использование ab с post запросом и аутентификацией:
+
+    .\ab -p post_loc.txt -T application/json -H 'Authorization: Token abcd1234' -c 10 -n 2000 http://example.com/api/v1/locations/
