@@ -125,7 +125,7 @@ To connect to your database from outside the cluster execute the following comma
     
     kubectl apply -f .\kubernetes\
 
-## Добавление prometheus
+## Добавление Prometheus stack
 
     helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
     helm repo update
@@ -136,7 +136,7 @@ To connect to your database from outside the cluster execute the following comma
     kubectl port-forward --namespace default svc/prometheus-operated 9090:9090
     kubectl port-forward --namespace default svc/stack-grafana 9000:80
 
-Логин/пароль grafana: admin/prom-operator
+Логин/пароль по умолчанию grafana: admin/prom-operator
 
 ## Описание Apache Benchmark для тестирования
 https://httpd.apache.org/docs/2.4/programs/ab.html
