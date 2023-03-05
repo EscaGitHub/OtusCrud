@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OtusCrud.Data;
 using OtusCrud.Data.DataModels;
-using OtusCrud.Models;
 
 namespace OtusCrud.Repositories;
 

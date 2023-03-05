@@ -36,7 +36,8 @@ if (!db.User.Any())
             FirstName = "Ivan",
             LastName = "Ivanov",
             Phone = "70001000000",
-            UserName = "IvanI"
+            UserName = "IvanI",
+            Password = "11111"
         },
         new UserEntity
         {
@@ -44,7 +45,8 @@ if (!db.User.Any())
             FirstName = "Petr",
             LastName = "Petrov",
             Phone = "70002000000",
-            UserName = "PetrP"           
+            UserName = "PetrP",
+            Password = "22222"
         }
     });
     

@@ -29,4 +29,9 @@ public class UserEntity : BaseEntity
     /// Phone.
     /// </summary>
     public string? Phone { get; set; }
+
+    /// <summary>
+    /// Password.
+    /// </summary>
+    public string? Password { get; set; }
 }
