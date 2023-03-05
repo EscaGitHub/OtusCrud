@@ -12,27 +12,9 @@ using OtusCrud.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAuthorization();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            // указывает, будет ли валидироваться издатель при валидации токена
-            ValidateIssuer = true,
-            // строка, представляющая издателя
-            ValidIssuer = AuthOptions.Issuer,
-            // будет ли валидироваться потребитель токена
-            ValidateAudience = true,
-            // установка потребителя токена
-            ValidAudience = AuthOptions.Audience,
-            // будет ли валидироваться время существования
-            ValidateLifetime = true,
-            // установка ключа безопасности
-            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-            // валидация ключа безопасности
-            ValidateIssuerSigningKey = true,
-        };
-    });
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(ConfigureJwtBearer);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -42,7 +24,7 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
-builder.Services.AddProblemDetails();
+builder.Services.AddProblemDetails(ConfigureProblemDetails);
 
 builder.Services.AddDbContext<UserDataContext>(option =>
     option.UseNpgsql(builder.Configuration.GetConnectionString("OtusUsers")));
@@ -68,3 +50,41 @@ app.MapControllers();
 app.MapGet("/health", () => new HealthResponse { Status = "OK" });
 
 app.Run();
+
+
+#region Private
+
+void ConfigureProblemDetails(ProblemDetailsOptions options)
+{
+    options.IncludeExceptionDetails = (_, _) =>
+    {
+        var variable = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        
+        return variable is not null && variable == "Development";
+    };
+}
+
+void ConfigureJwtBearer(JwtBearerOptions options)
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        // указывает, будет ли валидироваться издатель при валидации токена
+        ValidateIssuer = true,
+        // строка, представляющая издателя
+        ValidIssuer = AuthOptions.Issuer,
+        // будет ли валидироваться потребитель токена
+        ValidateAudience = true,
+        // установка потребителя токена
+        ValidAudience = AuthOptions.Audience,
+        // будет ли валидироваться время существования
+        ValidateLifetime = true,
+        // установка ключа безопасности
+        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+        // валидация ключа безопасности
+        ValidateIssuerSigningKey = true,
+    };
+}
+
+#endregion
+
+

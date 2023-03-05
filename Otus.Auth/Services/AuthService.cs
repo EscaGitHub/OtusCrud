@@ -35,7 +35,7 @@ public class AuthService : IAuthService
         
         if (!userId.HasValue)
         {
-            throw new AuthenticationException("Пароль или логин неверны.");
+            throw new InvalidOperationException("Пароль или логин неверны.");
         }
 
         var token = Jwt.GenerateToken(login, userId.Value, cancellationToken);
