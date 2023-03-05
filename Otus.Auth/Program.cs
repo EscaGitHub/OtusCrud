@@ -33,6 +33,9 @@ builder.Services.AddDbContext<UserDataContext>(option =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRegistrationRepository, RegistrationRepository>();
 
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+
 var app = builder.Build();
 
 app.UseProblemDetails();

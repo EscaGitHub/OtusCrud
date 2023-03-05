@@ -19,7 +19,7 @@ public static class Jwt
         var claims = new List<Claim>
         {
             new(ClaimTypes.Name, login),
-            new(JwtRegisteredClaimNames.Sub, userId.ToString()), // добавили идентификатор пользователя
+            new(ClaimTypes.NameIdentifier, userId.ToString()), // добавили идентификатор пользователя
             new(JwtRegisteredClaimNames.Name, login)
         };
 
