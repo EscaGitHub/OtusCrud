@@ -1,11 +1,13 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+ENV ASPNETCORE_URLS=http://+:8010
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8010
+EXPOSE 8009
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["Otus.Auth/Otus.Auth.csproj", "Otus.Auth/"]
+COPY ["OtusCrud.Data/OtusCrud.Data.csproj", "OtusCrud.Data/"]
 RUN dotnet restore "Otus.Auth/Otus.Auth.csproj"
 COPY . .
 WORKDIR "/src/Otus.Auth"
