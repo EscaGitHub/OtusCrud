@@ -1,0 +1,53 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: otus-auth-all-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/auth-url: http://otus-auth-service.default.svc.cluster.local/auth/nginx
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "arch.homework"
+      http:
+        paths:
+          - path: / # Направляем все запросы к otus-auth, проходит авторизация токена из-за annotations
+            pathType: Prefix
+            backend:
+              service:
+                name: otus-auth-service
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: otus-auth-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "arch.homework"
+      http:
+        paths:
+          - path: /api/v1/auth # Обходим авторизацию для запроса токена и регистрации
+            pathType: Prefix
+            backend:
+              service:
+                name: otus-auth-service
+                port:
+                  number: 80
+          - path: /swagger # Обходим авторизацию для Swagger
+            pathType: Prefix
+            backend:
+              service:
+                name: otus-auth-service
+                port:
+                  number: 80
+          - path: /health # Обходим авторизацию для health
+            pathType: Prefix
+            backend:
+              service:
+                name: otus-auth-service
+                port:
+                  number: 80
+
+

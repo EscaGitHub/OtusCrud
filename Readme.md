@@ -2,7 +2,26 @@
 
 ## ДЗ 15 Apigateway
 
-
+Ставим nginx:
+```shell
+helm install nginx ingress-nginx/ingress-nginx -f .\configs\nginx-ingress.yaml
+```
+Ставим PostgreSQL
+```shell
+helm install my-release --set auth.postgresPassword=Test123 --set auth.database=otususers bitnami/postgresql
+```
+Пробросить порт PostgreSQL для проверок:
+```shell
+ kubectl port-forward --namespace default svc/my-release-postgresql 5432:5432
+```
+Ставим приложение Auth и Job миграций (создает таблицу и тестовых пользователей):
+```shell
+kubectl apply -f .\auth
+```
+Swagger:
+```shell
+http://arch.homework/swagger/index.html
+```
 
 ## ДЗ
 

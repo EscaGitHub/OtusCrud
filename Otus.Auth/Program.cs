@@ -2,6 +2,7 @@ using Otus.Auth.Models;
 using System.Reflection;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Otus.Auth.Repositories;
@@ -51,6 +52,9 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapGet("/health", () => new HealthResponse { Status = "OK" });
+
+// Эндпоинт для проверки авторизации для nginx:
+app.MapGet("auth/nginx", [Authorize] () => new HealthResponse {Status = "Validate"});
 
 app.Run();
 

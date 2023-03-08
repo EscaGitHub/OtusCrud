@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: otus-crud-migrations-job
+spec:
+  template:
+    spec:
+      containers:
+        - name: otus-crud-migrations
+          image: escadockerhub/otus.crud.migrations:1.2
+          env:
+            - name: ConnectionStrings__OtusUsers
+              valueFrom:
+                secretKeyRef:
+                  name: otus-crud-secrets
+                  key: DbConnectionString
+      restartPolicy: Never
+  backoffLimit: 4
+  

@@ -11,7 +11,7 @@ namespace Otus.Auth.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/v1/account")]
-[Authorize]
+//[Authorize]
 public class AccountController : ControllerBase
 {
     private readonly IAccountService _accountService;
