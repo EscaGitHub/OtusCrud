@@ -1,3 +1,5 @@
+using System.Net;
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Mvc;
 using Otus.Auth.Models.Auth;
 using Otus.Auth.Services;
@@ -28,9 +30,16 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequest request, CancellationToken cancellationToken)
     {
-        var result = await _authService.RegisterUserAsync(request.Login, request.Password, cancellationToken);
+        try
+        {
+            var result = await _authService.RegisterUserAsync(request.Login, request.Password, cancellationToken);
 
-        return Ok(result);
+            return Ok(result);
+        }
+        catch (Exception e)
+        {
+            throw new ProblemDetailsException((int)HttpStatusCode.BadRequest, e.Message, e);
+        }
     }
 
     /// <summary>
@@ -40,8 +49,15 @@ public class AuthController : ControllerBase
     [HttpPost("token")]
     public async Task<IActionResult> GetToken(TokenRequest request, CancellationToken cancellationToken)
     {
-        var token = await _authService.GetUserTokenAsync(request.Login, request.Password, cancellationToken);
+        try
+        {
+            var token = await _authService.GetUserTokenAsync(request.Login, request.Password, cancellationToken);
 
-        return Ok(token);
+            return Ok(token);
+        }
+        catch (Exception e)
+        {
+            throw new ProblemDetailsException((int)HttpStatusCode.BadRequest, e.Message, e);
+        }
     }
 }

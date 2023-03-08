@@ -63,11 +63,11 @@ app.Run();
 
 void ConfigureProblemDetails(ProblemDetailsOptions options)
 {
-    options.IncludeExceptionDetails = (_, _) =>
+    options.IncludeExceptionDetails = (context, _) =>
     {
-        var variable = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-        
-        return variable is not null && variable == "Development";
+        var env = context.RequestServices.GetRequiredService<IHostEnvironment>();
+
+        return env.IsDevelopment() || env.IsStaging();
     };
 }
 
