@@ -2,6 +2,12 @@
 
 ## ДЗ 15 Apigateway
 
+Запросы идут в один сервис, но авторизация на отдельный контроллер происходит в nginx, 
+манифест в файле ингресса otus-auth-ingress.yaml:
+```shell
+  annotations:
+    nginx.ingress.kubernetes.io/auth-url: http://otus-auth-service.default.svc.cluster.local/auth/nginx
+```
 Ставим nginx:
 ```shell
 helm install nginx ingress-nginx/ingress-nginx -f .\configs\nginx-ingress.yaml
@@ -22,8 +28,94 @@ Swagger:
 ```shell
 http://arch.homework/swagger/index.html
 ```
+Установка newman для запуска тестов postman:
+```shell
+npm install -g newman
+```
+Запуск тестов из каталога OtusCrud\postman:
+```shell
+newman run .\Otus.Auth.postman_collection.json
+```
 
-## ДЗ
+<details open>
+<summary>Результат выполнения</summary>
+
+```shell
+Otus.Auth
+
+→ Health
+  GET http://arch.homework/health [200 OK, 170B, 26ms]
+  √  service are ok
+
+→ Register first user
+  POST http://arch.homework/api/v1/auth/register [200 OK, 157B, 9ms]
+  √  request is valid JSON
+  √  response json contains login
+
+→ First user info
+  GET http://arch.homework/api/v1/account [401 Unauthorized, 334B, 4ms]
+  √  first user unauthorized to get info
+
+→ First user update info
+  PUT http://arch.homework/api/v1/account [401 Unauthorized, 334B, 4ms]
+  √  first user unauthorized to update
+
+→ Login first user
+  POST http://arch.homework/api/v1/auth/token [200 OK, 554B, 5ms]
+  ┌
+  │ 'User name: Lydia.Torphy80'
+  └
+  √  first user login
+  √  request is valid JSON
+
+→ First user update info after login
+  PUT http://arch.homework/api/v1/account [200 OK, 99B, 8ms]
+  √  first user updated
+
+→ First user info after update
+  GET http://arch.homework/api/v1/account [200 OK, 282B, 5ms]
+  √  first user updated info is ok
+
+→ Register second user
+  POST http://arch.homework/api/v1/auth/register [200 OK, 157B, 7ms]
+  √  request is valid JSON
+  √  response json contains login
+
+→ Login secound user
+  POST http://arch.homework/api/v1/auth/token [200 OK, 557B, 4ms]
+  ┌
+  │ 'User name: Clementina.Kris'
+  └
+  √  first user login
+  √  request is valid JSON
+
+→ Second user info
+  GET http://arch.homework/api/v1/account [200 OK, 244B, 5ms]
+  √  second user info is ok
+
+┌─────────────────────────┬─────────────────┬─────────────────┐
+│                         │        executed │          failed │
+├─────────────────────────┼─────────────────┼─────────────────┤
+│              iterations │               1 │               0 │
+├─────────────────────────┼─────────────────┼─────────────────┤
+│                requests │              10 │               0 │
+├─────────────────────────┼─────────────────┼─────────────────┤
+│            test-scripts │              20 │               0 │
+├─────────────────────────┼─────────────────┼─────────────────┤
+│      prerequest-scripts │              10 │               0 │
+├─────────────────────────┼─────────────────┼─────────────────┤
+│              assertions │              14 │               0 │
+├─────────────────────────┴─────────────────┴─────────────────┤
+│ total run duration: 920ms                                   │
+├─────────────────────────────────────────────────────────────┤
+│ total data received: 1.39kB (approx)                        │
+├─────────────────────────────────────────────────────────────┤
+│ average response time: 7ms [min: 4ms, max: 26ms, s.d.: 6ms] │
+└─────────────────────────────────────────────────────────────┘
+```
+</details>
+
+## ДЗ Старое
 
 ### Тестирование нагрузки
 

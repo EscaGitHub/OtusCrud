@@ -1,0 +1,561 @@
+{
+	"info": {
+		"_postman_id": "55e0c410-5820-4a8a-a533-d76e6f549124",
+		"name": "Otus.Auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6730443"
+	},
+	"item": [
+		{
+			"name": "Health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"service are ok\", function() {\r",
+							"    const jsonBody = pm.response.json();\r",
+							"    pm.expect(jsonBody.status).to.eql(\"OK\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/health",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register first user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var requestJSON;\r",
+							"\r",
+							"try { \r",
+							"    requestJSON = JSON.parse(pm.request.body); \r",
+							"    tests['request is valid JSON'] = true;\r",
+							"}\r",
+							"catch (e) { \r",
+							"    requestJSON = {}; \r",
+							"    tests['request is valid JSON'] = false;\r",
+							"}\r",
+							"\r",
+							"tests['response json contains login'] = _.has(requestJSON, 'login');\r",
+							"tests['response json contains login'] = _.has(requestJSON, 'password');\r",
+							"\r",
+							"pm.collectionVariables.set(\"User\", requestJSON.login);\r",
+							"pm.collectionVariables.set(\"Pass\", requestJSON.password);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\" : \"{{$randomUserName}}\",\r\n    \"password\" : \"{{$randomPassword}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/auth/register",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "First user info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"first user unauthorized to get info\", function() {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\" : \"{{User}}\",\r\n    \"password\" : \"{{Pass}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/account",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "First user update info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"first user unauthorized to update\", function() {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\" : \"{{User}}\",\r\n    \"password\" : \"{{Pass}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/account",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login first user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responseJSON;\r",
+							"\r",
+							"console.log(\"User name: \" + pm.collectionVariables.get(\"User\"));\r",
+							"\r",
+							"\r",
+							"pm.test(\"first user login\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"try { \r",
+							"    responseJSON = pm.response.text();\r",
+							"    tests['request is valid JSON'] = true;\r",
+							"}\r",
+							"catch (e) { \r",
+							"    responseJSON = \"\"; \r",
+							"    tests['request is valid JSON'] = false;\r",
+							"}\r",
+							"\r",
+							"pm.collectionVariables.set(\"Token\", responseJSON);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\" : \"{{User}}\",\r\n    \"password\" : \"{{Pass}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/auth/token",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "First user update info after login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"first user updated\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.have.body(\"\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"{{User}}\",\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"phone\": \"{{$randomPhoneNumber}}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/account",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "First user info after update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"first user updated info is ok\", function() {\r",
+							"    const jsonBody = pm.response.json();\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(jsonBody.userName).to.eql(pm.collectionVariables.get(\"User\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/account",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register second user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var requestJSON;\r",
+							"\r",
+							"try { \r",
+							"    requestJSON = JSON.parse(pm.request.body); \r",
+							"    tests['request is valid JSON'] = true;\r",
+							"}\r",
+							"catch (e) { \r",
+							"    requestJSON = {}; \r",
+							"    tests['request is valid JSON'] = false;\r",
+							"}\r",
+							"\r",
+							"tests['response json contains login'] = _.has(requestJSON, 'login');\r",
+							"tests['response json contains login'] = _.has(requestJSON, 'password');\r",
+							"\r",
+							"pm.collectionVariables.set(\"User\", requestJSON.login);\r",
+							"pm.collectionVariables.set(\"Pass\", requestJSON.password);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\" : \"{{$randomUserName}}\",\r\n    \"password\" : \"{{$randomPassword}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/auth/register",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login secound user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responseJSON;\r",
+							"\r",
+							"console.log(\"User name: \" + pm.collectionVariables.get(\"User\"));\r",
+							"\r",
+							"pm.test(\"first user login\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"try { \r",
+							"    responseJSON = pm.response.text();\r",
+							"    tests['request is valid JSON'] = true;\r",
+							"}\r",
+							"catch (e) { \r",
+							"    responseJSON = \"\"; \r",
+							"    tests['request is valid JSON'] = false;\r",
+							"}\r",
+							"\r",
+							"pm.collectionVariables.set(\"Token\", responseJSON);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\" : \"{{User}}\",\r\n    \"password\" : \"{{Pass}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/auth/token",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Second user info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"second user info is ok\", function() {\r",
+							"    const jsonBody = pm.response.json();\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(jsonBody.userName).to.eql(pm.collectionVariables.get(\"User\"));\r",
+							"    pm.expect(jsonBody.firstName).to.eql(null);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/account",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"account"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://arch.homework",
+			"type": "string"
+		},
+		{
+			"key": "User",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "Pass",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "Token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
